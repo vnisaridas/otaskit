@@ -83,8 +83,17 @@ class TaskController extends Controller
     public function update($id, Request $request)
     {
         $data = $request->all();
-        $task = Task::find($id);
-        $task->update($request->all());
+        $task = Task::find($id);       
+
+        if($data['status'] == 'Done'){
+            $total_time = $task->created_at->diffInMinutes(\Carbon\Carbon::now());
+            if($total_time <= 5){
+                return response()->json([
+                    'status' => 'error',
+                    'message'=>'Need to Completed task only after 5 Minutes!',
+                ]);
+            }
+        }
 
         if($data['status'] == 'Assigned'){
             $employee = Employee::where('id',$data['employee_id'])->first();
@@ -96,6 +105,8 @@ class TaskController extends Controller
                 ->subject('Task Assigned');
             });
         }
+
+        $task->update($request->all());
 
         return response()->json([
             'status' => 'success',

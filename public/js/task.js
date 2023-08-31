@@ -15,7 +15,7 @@ $(document).ready(function(){
 					//console.log(res);
 					if(res.status == 'success'){
 						$('#TaskModal').modal('hide');
-						//window.location.reload();
+						window.location.reload();
 					}
 				},
 				error:function(){
@@ -59,8 +59,8 @@ $(document).ready(function(){
 				if(res.status == 'Done'){
 					$('#TaskUpdateModal .task_button').addClass('disabled');	
 				}
-				if(res.status != 'Unassigned'){
-					$('#TaskUpdateModal #status').val(res.status);
+				if(res.status == 'Unassigned'){
+					$('#TaskUpdateModal #status').val(' ');
 				}
 			},
 			error:function(){
@@ -81,7 +81,10 @@ $(document).ready(function(){
 					//console.log(res);
 					if(res.status == 'success'){
 						$('#TaskUpdateModal').modal('hide');
-						//window.location.reload();
+						window.location.reload();
+					}else{
+						alert(res.message);
+						$('#TaskUpdateModal').modal('hide');
 					}
 				},
 				error:function(){
